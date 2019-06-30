@@ -3,24 +3,23 @@
 namespace MockingMagician\Shot;
 
 
-class CompilerConfig implements CompilerConfigInterface
+class CompilerConfig
 {
-    public function __construct()
-    {
-    }
+    /** @var ManualDefinedIterator|null */
+    private $manualDefinedIterator;
+    /** @var ClassIterator|null */
+    private $classIterator;
+    /** @var string[] */
+    private $binds;
 
-    public function getNaturals(): ClassIterator
-    {
-        // TODO: Implement getNaturals() method.
-    }
+    public function __construct(
+        ?ManualDefinedIterator $manualDefinedIterator,
+        ?ClassIterator $classIterator,
+        string ...$binds
+    ) {
 
-    public function getManualsDefined()
-    {
-
-    }
-
-    public static function createFromYaml(string $yamlPath): CompilerConfigInterface
-    {
-        return new static();
+        $this->manualDefinedIterator = $manualDefinedIterator;
+        $this->classIterator = $classIterator;
+        $this->binds = $binds;
     }
 }
