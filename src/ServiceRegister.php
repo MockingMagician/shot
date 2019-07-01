@@ -2,7 +2,6 @@
 
 namespace MockingMagician\Shot;
 
-
 use MockingMagician\Shot\Exceptions\ServiceIdDuplicateException;
 use MockingMagician\Shot\Exceptions\ServiceNotDefinedException;
 
@@ -13,10 +12,12 @@ class ServiceRegister
 
     /**
      * @param Service $service
-     * @return ServiceRegister
+     *
      * @throws ServiceIdDuplicateException
+     *
+     * @return ServiceRegister
      */
-    public function add(Service $service): ServiceRegister
+    public function add(Service $service): self
     {
         if (isset($this->services[$service->getId()])) {
             throw new ServiceIdDuplicateException($service->getId());
@@ -29,8 +30,10 @@ class ServiceRegister
 
     /**
      * @param string $serviceId
-     * @return object
+     *
      * @throws ServiceNotDefinedException
+     *
+     * @return object
      */
     public function getService(string $serviceId)
     {

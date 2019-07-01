@@ -2,7 +2,6 @@
 
 namespace MockingMagician\Shot;
 
-
 class ManualDefined
 {
     /** @var null|string */
@@ -20,7 +19,7 @@ class ManualDefined
         ?string $id,
         ?string $class,
         array $arguments = [],
-        string $callMethod,
+        ?string $callMethod = null,
         array $argumentsCallMethod = []
     ) {
         $this->id = $id;
@@ -28,5 +27,45 @@ class ManualDefined
         $this->arguments = $arguments;
         $this->callMethod = $callMethod;
         $this->argumentsCallMethod = $argumentsCallMethod;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getId(): ?string
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getClass(): ?string
+    {
+        return $this->class;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getArguments(): array
+    {
+        return $this->arguments;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCallMethod(): ?string
+    {
+        return $this->callMethod;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getArgumentsCallMethod(): array
+    {
+        return $this->argumentsCallMethod;
     }
 }

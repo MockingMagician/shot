@@ -2,12 +2,11 @@
 
 namespace MockingMagician\Shot;
 
-
 class CompilerConfig
 {
-    /** @var ManualDefinedIterator|null */
+    /** @var null|ManualDefinedIterator */
     private $manualDefinedIterator;
-    /** @var ClassIterator|null */
+    /** @var null|ClassIterator */
     private $classIterator;
     /** @var string[] */
     private $binds;
@@ -17,9 +16,23 @@ class CompilerConfig
         ?ClassIterator $classIterator,
         string ...$binds
     ) {
-
         $this->manualDefinedIterator = $manualDefinedIterator;
         $this->classIterator = $classIterator;
         $this->binds = $binds;
+    }
+
+    public function getManualDefinedIterator(): ?ManualDefinedIterator
+    {
+        return $this->manualDefinedIterator;
+    }
+
+    public function getClassIterator(): ?ClassIterator
+    {
+        return $this->classIterator;
+    }
+
+    public function getBinds(): array
+    {
+        return $this->binds;
     }
 }

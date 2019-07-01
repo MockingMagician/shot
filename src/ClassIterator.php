@@ -2,25 +2,24 @@
 
 namespace MockingMagician\Shot;
 
-
 use Iterator;
 
 class ClassIterator extends \AppendIterator
 {
-    public function __construct(string ...$directoryPaths)
+    public function __construct(string ...$directoryPath)
     {
-        foreach ($directoryPaths as $directoryPath)
-        {
-            parent::append(new ClassFilterIterator(new \RecursiveDirectoryIterator($directoryPath)));
+        parent::__construct();
+        foreach ($directoryPath as $directory) {
+            parent::append(new ClassFilterIterator(new \RecursiveDirectoryIterator($directory)));
         }
     }
 
     public function append(Iterator $iterator)
     {
-        if (!$iterator instanceof ClassIterator) {
+        if (!$iterator instanceof self) {
             throw new \UnexpectedValueException(sprintf('Expect %s', static::class));
         }
 
-        static::append($iterator);
+        parent::append($iterator);
     }
 }

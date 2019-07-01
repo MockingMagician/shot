@@ -2,7 +2,6 @@
 
 namespace MockingMagician\Shot;
 
-
 class Service
 {
     /** @var string */

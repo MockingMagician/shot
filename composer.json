@@ -9,7 +9,13 @@
     ],
     "autoload": {
         "psr-4": {
-            "MockingMagician\\Shot": "src/"
+            "MockingMagician\\Shot\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "MockingMagician\\Shot\\TestClasses\\": "tests/classes_for_test_injection" ,
+            "MockingMagician\\Shot\\Tests\\": "tests/tests"
         }
     },
     "require": {},

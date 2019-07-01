@@ -2,7 +2,6 @@
 
 namespace MockingMagician\Shot\Exceptions;
 
-
 use Throwable;
 
 class ServiceNotDefinedException extends \Exception
