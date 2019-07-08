@@ -14,7 +14,7 @@ class CompilerConfig
     public function __construct(
         ?ManualDefinedIterator $manualDefinedIterator,
         ?ClassIterator $classIterator,
-        string ...$binds
+        array ...$binds
     ) {
         $this->manualDefinedIterator = $manualDefinedIterator;
         $this->classIterator = $classIterator;

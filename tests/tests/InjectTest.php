@@ -36,8 +36,7 @@ final class InjectTest extends TestCase
         }
         $memoryGetUsageEnd = memory_get_usage() - $memoryGetUsageStart;
         $averageA = $memoryGetUsageEnd / $k;
-//        var_dump($averageA);
-
+        var_dump(['Inject Small foreach', $averageA]);
 
 
         $memoryGetUsageStart = memory_get_usage();
@@ -93,7 +92,7 @@ final class InjectTest extends TestCase
         };
         $memoryGetUsageEnd = memory_get_usage() - $memoryGetUsageStart;
         $averageJ = $memoryGetUsageEnd / 10;
-//        var_dump(['J', $averageJ]);
+        var_dump(['inject Small', $averageJ]);
 
         $memoryGetUsageStart = memory_get_usage();
         while ($l-- > 0) {
@@ -183,7 +182,7 @@ final class InjectTest extends TestCase
         }
         $memoryGetUsageEnd = memory_get_usage() - $memoryGetUsageStart;
         $averageC = $memoryGetUsageEnd / $k;
-//        var_dump($averageC);
+        var_dump(['Inject Big foreach', $averageC]);
 
         $memoryGetUsageStart = memory_get_usage();
         while ($j-- > 0) {
@@ -195,7 +194,7 @@ final class InjectTest extends TestCase
         }
         $memoryGetUsageEnd = memory_get_usage() - $memoryGetUsageStart;
         $averageB = $memoryGetUsageEnd / $k;
-//        var_dump($averageB);
+        var_dump(['Inject Big foreach 2', $averageB]);
 
         $this->assertLessThan($toInjectBig->getSize(), $averageB);
 
@@ -252,7 +251,7 @@ final class InjectTest extends TestCase
         };
         $memoryGetUsageEnd = memory_get_usage() - $memoryGetUsageStart;
         $averageG = $memoryGetUsageEnd / 10;
-//        var_dump(['G', $averageG]);
+        var_dump(['Inject Big', $averageG]);
 
         foreach ($function as $k => $f) {
             $memoryGetUsageStart = memory_get_usage();

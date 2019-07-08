@@ -14,10 +14,13 @@ class ManualDefined
     private $callMethod;
     /** @var string[] */
     private $argumentsCallMethod;
+    /** @var bool */
+    private $isSingleton;
 
     public function __construct(
         ?string $id,
         ?string $class,
+        bool $isSingleton = false,
         array $arguments = [],
         ?string $callMethod = null,
         array $argumentsCallMethod = []
@@ -27,6 +30,7 @@ class ManualDefined
         $this->arguments = $arguments;
         $this->callMethod = $callMethod;
         $this->argumentsCallMethod = $argumentsCallMethod;
+        $this->isSingleton = $isSingleton;
     }
 
     /**
@@ -67,5 +71,13 @@ class ManualDefined
     public function getArgumentsCallMethod(): array
     {
         return $this->argumentsCallMethod;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSingleton(): bool
+    {
+        return $this->isSingleton;
     }
 }

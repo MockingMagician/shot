@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MockingMagician\Shot;
 
 class Compiler
@@ -37,15 +39,19 @@ class Compiler
                 $arguments = $manualDefined->getArguments();
                 $methodToCall = $manualDefined->getCallMethod();
                 $argumentsForMethod = $manualDefined->getArgumentsCallMethod();
+                $isSingleton = $manualDefined->isSingleton();
                 if (null === $id && null === $class) {
                     throw new \UnexpectedValueException('id and class must not both be null');
                 }
                 if (null === $id) {
                     $id = $class;
                 }
+                if (null === $class) {
+                    $class = $id;
+                }
                 $service = new Service(
                     $id,
-                    true,
+                    $isSingleton,
                     function () use ($class, $arguments, $methodToCall, $argumentsForMethod) {
                         $class = new $class(...$arguments);
                         if (!\is_string($methodToCall)) {

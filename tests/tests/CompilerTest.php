@@ -22,13 +22,13 @@ final class CompilerTest extends TestCase
      */
     public function testCompile()
     {
-        $manualDefined = new ManualDefined('class-a', A::class, ['test']);
+        $manualDefined = new ManualDefined('class-a', A::class, true, ['test']);
         $manualDefinedIterator = new ManualDefinedIterator($manualDefined);
         $config = new CompilerConfig($manualDefinedIterator, null);
 
         $classA = (new Compiler($config))->compile()->getService('class-a');
         $this->assertInstanceOf(A::class, $classA);
-        // @var $classA A
+        /** @var $classA A */
         $this->assertEquals('test', $classA->getString());
     }
 }
