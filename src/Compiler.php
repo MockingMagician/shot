@@ -4,16 +4,30 @@ declare(strict_types=1);
 
 namespace MockingMagician\Shot;
 
+use MockingMagician\Shot\Exceptions\CacheDirectoryException;
+
 class Compiler
 {
     /** @var CompilerConfig[] */
     private $configs;
     /** @var ServiceRegister */
     private $serviceRegister;
+    /** @var string */
+    private $cachePath;
 
-    public function __construct(CompilerConfig ...$configs)
+    /**
+     * Compiler constructor.
+     * @param string $cachePath
+     * @param CompilerConfig ...$configs
+     * @throws CacheDirectoryException
+     */
+    public function __construct(string $cachePath, CompilerConfig ...$configs)
     {
+        if (!\is_dir($cachePath) || !\is_writable($cachePath)) {
+            throw new CacheDirectoryException($cachePath);
+        }
         $this->configs = $configs;
+        $this->cachePath = $cachePath;
     }
 
     /** @throws Exceptions\ServiceIdDuplicateException */
@@ -48,6 +62,9 @@ class Compiler
                 }
                 if (null === $class) {
                     $class = $id;
+                }
+                foreach ($arguments as $k => $argument) {
+                    $arguments[$k] = '';
                 }
                 $service = new Service(
                     $id,
