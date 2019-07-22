@@ -2,6 +2,12 @@
 
 declare(strict_types=1);
 
+/**
+ * @author Marc MOREAU <moreau.marc.web@gmail.com>
+ * @license https://github.com/MockingMagician/shot/blob/master/LICENSE.md CC-BY-SA-4.0
+ * @link https://github.com/MockingMagician/shot/blob/master/README.md
+ */
+
 namespace MockingMagician\Shot;
 
 use MockingMagician\Shot\Exceptions\CacheDirectoryException;
@@ -17,8 +23,10 @@ class Compiler
 
     /**
      * Compiler constructor.
-     * @param string $cachePath
+     *
+     * @param string         $cachePath
      * @param CompilerConfig ...$configs
+     *
      * @throws CacheDirectoryException
      */
     public function __construct(string $cachePath, CompilerConfig ...$configs)
@@ -41,7 +49,7 @@ class Compiler
     /**
      * @throws Exceptions\ServiceIdDuplicateException
      */
-    private function generateServiceRegister()
+    private function generateServiceRegister(): void
     {
         $serviceRegister = new ServiceRegister();
 

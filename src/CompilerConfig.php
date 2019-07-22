@@ -1,29 +1,34 @@
 <?php
 
+declare(strict_types=1);
+
+/**
+ * @author Marc MOREAU <moreau.marc.web@gmail.com>
+ * @license https://github.com/MockingMagician/shot/blob/master/LICENSE.md CC-BY-SA-4.0
+ * @link https://github.com/MockingMagician/shot/blob/master/README.md
+ */
+
 namespace MockingMagician\Shot;
 
 class CompilerConfig
 {
-    /** @var null|ManualDefinedIterator */
-    private $manualDefinedIterator;
-    /** @var null|ClassIterator */
+    private $serviceDefinitionIterator;
     private $classIterator;
-    /** @var string[] */
-    private $binds;
+    private $bindIterator;
 
     public function __construct(
-        ?ManualDefinedIterator $manualDefinedIterator,
+        ?ServiceDefinitionIterator $serviceDefinitionIterator,
         ?ClassIterator $classIterator,
-        array ...$binds
+        ?BindIterator $bindIterator
     ) {
-        $this->manualDefinedIterator = $manualDefinedIterator;
+        $this->serviceDefinitionIterator = $serviceDefinitionIterator;
         $this->classIterator = $classIterator;
-        $this->binds = $binds;
+        $this->bindIterator = $bindIterator;
     }
 
-    public function getManualDefinedIterator(): ?ManualDefinedIterator
+    public function getServiceDefinitionIterator(): ?ServiceDefinitionIterator
     {
-        return $this->manualDefinedIterator;
+        return $this->serviceDefinitionIterator;
     }
 
     public function getClassIterator(): ?ClassIterator
@@ -31,8 +36,8 @@ class CompilerConfig
         return $this->classIterator;
     }
 
-    public function getBinds(): array
+    public function getBindIterator(): ?BindIterator
     {
-        return $this->binds;
+        return $this->bindIterator;
     }
 }
