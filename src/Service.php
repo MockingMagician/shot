@@ -12,19 +12,19 @@ namespace MockingMagician\Shot;
 
 class Service
 {
-    /** @var string */
     private $id;
-    /** @var bool */
     private $singleton;
-    /** @var callable|object */
+    /** @var callable|mixed */
     private $service;
+    private $serviceRegister;
 
-    public function __construct(string $id, bool $singleton, callable $service)
+    public function __construct(string $id, bool $singleton, callable $service, ServiceRegister $serviceRegister)
     {
         $this->id = $id;
         $this->singleton = $singleton;
+        $this->serviceRegister = $serviceRegister;
         if ($this->isSingleton()) {
-            $this->service = $service();
+            $this->service = $service($this->serviceRegister);
 
             return;
         }
@@ -50,6 +50,6 @@ class Service
             return $this->service;
         }
 
-        return ($this->service)();
+        return ($this->service)($this->serviceRegister);
     }
 }

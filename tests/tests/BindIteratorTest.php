@@ -32,7 +32,7 @@ final class BindIteratorTest extends TestCase
         $i = 0;
         foreach ($bindIterator as $bind) {
             ++$i;
-            // @var $bind Bind
+            /** @var Bind $bind */
             static::assertContains($bind->getName(), ['a', 'b']);
             static::assertContains($bind->getValue(), [5, 'azerty']);
         }

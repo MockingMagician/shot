@@ -14,15 +14,15 @@ class A
 {
     /** @var string */
     private $string;
+    /** @var int */
+    private $integer;
 
-    public function __construct(string $string)
+    public function __construct(string $string, int $integer)
     {
         $this->string = $string;
+        $this->integer = $integer;
     }
 
-    /**
-     * @return string
-     */
     public function getString(): string
     {
         return $this->string;

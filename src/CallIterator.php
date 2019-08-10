@@ -10,12 +10,20 @@ declare(strict_types=1);
 
 namespace MockingMagician\Shot;
 
-class CallIterator extends \AppendIterator
+/**
+ * Class CallIterator.
+ *
+ * @method Call current()
+ */
+class CallIterator extends \AppendIterator implements \Countable
 {
+    private $length = 0;
+
     public function __construct(Call ...$calls)
     {
         parent::__construct();
         parent::append(new \ArrayIterator($calls));
+        $this->length += \count($calls);
     }
 
     public function append(\Iterator $iterator): void
@@ -25,5 +33,22 @@ class CallIterator extends \AppendIterator
         }
 
         parent::append($iterator);
+        $this->length += $iterator->length;
+    }
+
+    /**
+     * Count elements of an object.
+     *
+     * @see http://php.net/manual/en/countable.count.php
+     *
+     * @return int The custom count as an integer.
+     *
+     * The return value is cast to an integer.
+     *
+     * @since 5.1.0
+     */
+    public function count()
+    {
+        return $this->length;
     }
 }

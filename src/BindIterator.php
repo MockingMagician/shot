@@ -12,6 +12,11 @@ namespace MockingMagician\Shot;
 
 use Iterator;
 
+/**
+ * Class BindIterator.
+ *
+ * @method Bind current()
+ */
 class BindIterator extends \AppendIterator
 {
     public function __construct(Bind ...$binds)

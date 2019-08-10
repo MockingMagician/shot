@@ -10,6 +10,11 @@ declare(strict_types=1);
 
 namespace MockingMagician\Shot;
 
+/**
+ * Class ServiceDefinitionIterator.
+ *
+ * @method ServiceDefinition current()
+ */
 class ServiceDefinitionIterator extends \AppendIterator
 {
     public function __construct(ServiceDefinition ...$serviceDefinitions)
