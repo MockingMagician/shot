@@ -77,5 +77,8 @@ class ParameterIteratorTest extends TestCase
         for ($i = 0; $i < $pi->count(); $i++) {
             self::assertInstanceOf(Parameter::class, $pi[$i]);
         }
+
+        self::assertTrue(isset($pi[0], $pi[1], $pi[2], $pi[3], $pi[4], $pi[5], $pi[6], $pi[7], $pi[8]));
+        self::assertFalse(isset($pi[9]));
     }
 }

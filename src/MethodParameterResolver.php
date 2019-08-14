@@ -18,19 +18,37 @@ class MethodParameterResolver
         $this->parameterIterator = $parameterIterator;
     }
 
-    public function resolve()
+    public function resolve(): string
     {
-        $methodName = $this->methodReflection->getName();
         $methodParameters = $this->methodReflection->getParameters();
         $params = [];
         foreach ($methodParameters as $methodParameter) {
             $paramPosition = $methodParameter->getPosition();
-            if ($this->parameterIterator->getArrayIterator()->offsetGet($paramPosition)) {
-
-            }
             $canBeNull = $methodParameter->allowsNull();
-            $paramType = $methodParameter->getType();
             $hasDefaultValue = $methodParameter->isDefaultValueAvailable();
+            if (isset($this->parameterIterator[$paramPosition])) {
+                // TODO Maybe something to deal with it
+                // $paramType = $methodParameter->getType();
+                $params[] = $this->parameterIterator[$paramPosition];
+
+                continue;
+            }
+
+            if ($hasDefaultValue) {
+                $params[] = $methodParameter->getDefaultValue();
+
+                continue;
+            }
+
+            if ($canBeNull) {
+                $params[] = null;
+
+                continue;
+            }
+
+            throw new \RuntimeException('Parameter is not set and can not be set');
         }
+
+        return '(' . implode(', ', $params) . ')';
     }
 }
