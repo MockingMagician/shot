@@ -2,6 +2,7 @@
 
 namespace MockingMagician\Shot\Tests;
 
+use MockingMagician\Shot\Exceptions\ParameterTypeImplementException;
 use MockingMagician\Shot\Parameter;
 use MockingMagician\Shot\ParameterIterator;
 use PHPUnit\Framework\TestCase;
@@ -15,19 +16,27 @@ class ParameterIteratorTest extends TestCase
     {
     }
 
+    /**
+     * @return \Generator
+     * @throws ParameterTypeImplementException
+     */
     protected function getParameterGenerator(): \Generator
     {
         $i = 0;
         while (true) {
             yield [
-                new Parameter($i, 'int'),
-                new Parameter((float) "$i.$i", 'float'),
-                new Parameter((string) $i, 'string'),
+                new Parameter($i),
+                new Parameter((float) "$i.$i"),
+                new Parameter((string) $i),
             ];
             $i++;
         }
     }
 
+    /**
+     * @return array
+     * @throws ParameterTypeImplementException
+     */
     protected function getParameter(): array
     {
         if (null === $this->parameterGenerator) {
@@ -39,18 +48,24 @@ class ParameterIteratorTest extends TestCase
         return $this->parameterGenerator->current();
     }
 
+    /**
+     * @throws ParameterTypeImplementException
+     */
     public function test count()
     {
         $pi = new ParameterIterator(...$this->getParameter());
         $this->assertEquals(3, \count($pi));
-        $pi->add(new Parameter(new \DateTime(), \DateTime::class));
+        $pi->add(new Parameter(\DateTime::class));
         $this->assertEquals(4, \count($pi));
         $pi->append(new ParameterIterator(... $this->getParameter()));
         $this->assertEquals(7, \count($pi));
-        $pi->add(new Parameter(new \DateTime(), \DateTime::class));
+        $pi->add(new Parameter(\DateTime::class));
         $this->assertEquals(8, \count($pi));
     }
 
+    /**
+     * @throws ParameterTypeImplementException
+     */
     public function test foreach()
     {
         $pi = new ParameterIterator(...$this->getParameter(), ...$this->getParameter(), ...$this->getParameter());
@@ -71,6 +86,9 @@ class ParameterIteratorTest extends TestCase
         static::assertEquals(15, \count($pi));
     }
 
+    /**
+     * @throws ParameterTypeImplementException
+     */
     public function test array access()
     {
         $pi = new ParameterIterator(...$this->getParameter(), ...$this->getParameter(), ...$this->getParameter());

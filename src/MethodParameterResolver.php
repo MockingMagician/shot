@@ -3,6 +3,7 @@
 namespace MockingMagician\Shot;
 
 
+use MockingMagician\Shot\Exceptions\ParameterNotFoundException;
 use ReflectionMethod;
 
 class MethodParameterResolver
@@ -18,35 +19,42 @@ class MethodParameterResolver
         $this->parameterIterator = $parameterIterator;
     }
 
+    /**
+     * @return string
+     * @throws ParameterNotFoundException
+     */
     public function resolve(): string
     {
         $methodParameters = $this->methodReflection->getParameters();
         $params = [];
+        $toMinusPosition = 0;
         foreach ($methodParameters as $methodParameter) {
             $paramPosition = $methodParameter->getPosition();
             $canBeNull = $methodParameter->allowsNull();
             $hasDefaultValue = $methodParameter->isDefaultValueAvailable();
-            if (isset($this->parameterIterator[$paramPosition])) {
+            if (isset($this->parameterIterator[$paramPosition - $toMinusPosition])) {
                 // TODO Maybe something to deal with it
                 // $paramType = $methodParameter->getType();
-                $params[] = $this->parameterIterator[$paramPosition];
+                $params[] = $this->parameterIterator[$paramPosition - $toMinusPosition]->getValue();
 
                 continue;
             }
 
             if ($hasDefaultValue) {
                 $params[] = $methodParameter->getDefaultValue();
+                ++$toMinusPosition;
 
                 continue;
             }
 
             if ($canBeNull) {
                 $params[] = null;
+                ++$toMinusPosition;
 
                 continue;
             }
 
-            throw new \RuntimeException('Parameter is not set and can not be set');
+            throw new ParameterNotFoundException($methodParameter->getName(), $this->methodReflection->getName());
         }
 
         return '(' . implode(', ', $params) . ')';
