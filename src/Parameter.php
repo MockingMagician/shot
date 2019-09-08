@@ -144,4 +144,47 @@ class Parameter
     {
         return static::TYPE_SERVICE_DEFINITION === $parameter->getType();
     }
+
+    /**
+     * @return string
+     * @throws ParameterTypeImplementException
+     */
+    public function resolve(): string
+    {
+        if (static::isString($this)) {
+            return "'" . \mb_ereg_replace("'", "\'", $this->value) . "'";
+        }
+
+        if (static::isFloat($this) || static::isInt($this)) {
+            return $this->value;
+        }
+
+        if (static::isNull($this)) {
+            return 'null';
+        }
+
+        if (static::isBoolean($this)) {
+            if (true === $this->value) {
+                return 'true';
+            }
+
+            return 'false';
+        }
+
+        if (static::isObject($this) || static::isService($this)) {
+            return '$serviceRegister->get(\'' . $this->value . '\')';
+        }
+
+        if (static::isArray($this)) {
+            $toReturn = '[';
+            foreach ($this->value as $k => $v) {
+                $toReturn .= (new Parameter($k))->resolve() . '=>' . (new Parameter($v))->resolve() . ',';
+            }
+            $toReturn .= ']';
+
+            return $toReturn;
+        }
+
+        throw new ParameterTypeImplementException($this->value);
+    }
 }

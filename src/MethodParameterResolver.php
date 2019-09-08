@@ -22,6 +22,7 @@ class MethodParameterResolver
     /**
      * @return string
      * @throws ParameterNotFoundException
+     * @throws Exceptions\ParameterTypeImplementException
      */
     public function resolve(): string
     {
@@ -30,25 +31,34 @@ class MethodParameterResolver
         $toMinusPosition = 0;
         foreach ($methodParameters as $methodParameter) {
             $paramPosition = $methodParameter->getPosition();
+//            var_dump($paramPosition);
+//            continue;
             $canBeNull = $methodParameter->allowsNull();
             $hasDefaultValue = $methodParameter->isDefaultValueAvailable();
+            var_dump([
+                '$paramPosition' => $paramPosition,
+                'resolve' => $this->parameterIterator[$paramPosition - $toMinusPosition]->resolve(),
+                '$canBeNull' => $canBeNull,
+                '$hasDefaultValue' => $hasDefaultValue,
+                'defaultValue' => (new Parameter($methodParameter->getDefaultValue()))->resolve(),
+            ]);
             if (isset($this->parameterIterator[$paramPosition - $toMinusPosition])) {
                 // TODO Maybe something to deal with it
                 // $paramType = $methodParameter->getType();
-                $params[] = $this->parameterIterator[$paramPosition - $toMinusPosition]->getValue();
+                $params[] = $this->parameterIterator[$paramPosition - $toMinusPosition]->resolve();
 
                 continue;
             }
 
             if ($hasDefaultValue) {
-                $params[] = $methodParameter->getDefaultValue();
+                $params[] = (new Parameter($methodParameter->getDefaultValue()))->resolve();
                 ++$toMinusPosition;
 
                 continue;
             }
 
             if ($canBeNull) {
-                $params[] = null;
+                $params[] = 'null';
                 ++$toMinusPosition;
 
                 continue;
