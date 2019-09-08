@@ -74,7 +74,7 @@ class Compiler
                 foreach ($arguments as $k => $argument) {
                     $arguments[$k] = '';
                 }
-                $service = new Service(
+                $service = new Service__(
                     $id,
                     $isSingleton,
                     function () use ($class, $arguments, $methodToCall, $argumentsForMethod) {

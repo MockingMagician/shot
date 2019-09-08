@@ -15,17 +15,17 @@ use MockingMagician\Shot\Exceptions\ServiceNotDefinedException;
 
 class ServiceRegister
 {
-    /** @var Service[] */
+    /** @var Service__[] */
     private $services;
 
     /**
-     * @param Service $service
+     * @param Service__ $service
      *
      * @throws ServiceIdDuplicateException
      *
      * @return ServiceRegister
      */
-    public function add(Service $service): self
+    public function add(Service__ $service): self
     {
         if (isset($this->services[$service->getId()])) {
             throw new ServiceIdDuplicateException($service->getId());
