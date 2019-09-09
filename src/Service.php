@@ -34,7 +34,7 @@ class Service implements ServiceInterface
     /**
      * @throws ServiceException
      */
-    public function getDefined()
+    public function getService()
     {
         $defined = $this->define();
 

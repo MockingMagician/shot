@@ -13,42 +13,48 @@ namespace MockingMagician\Shot;
 use MockingMagician\Shot\Exceptions\ServiceIdDuplicateException;
 use MockingMagician\Shot\Exceptions\ServiceNotDefinedException;
 
-class ServiceRegister
+class ServiceRegister implements ServiceRegisterInterface
 {
-    /** @var Service__[] */
+    /** @var Service[] */
     private $services;
 
     /**
-     * @param Service__ $service
-     *
-     * @throws ServiceIdDuplicateException
-     *
+     * @param $classOrStaticClassMethodOrCallable
+     * @param array $args
+     * @param string|null $id
      * @return ServiceRegister
+     * @throws ServiceIdDuplicateException
      */
-    public function add(Service__ $service): self
+    public function createService($classOrStaticClassMethodOrCallable, array $args = [], string $id = null, ?bool $isSingleton = null): self
     {
-        if (isset($this->services[$service->getId()])) {
-            throw new ServiceIdDuplicateException($service->getId());
+        if (null === $id) {
+            $id = $classOrStaticClassMethodOrCallable;
         }
 
-        $this->services[$service->getId()] = $service;
+        if (isset($this->services[$id])) {
+            throw new ServiceIdDuplicateException($id);
+        }
+
+        $this->services[$id] = new Service($this, $id, $classOrStaticClassMethodOrCallable, $args);
+        if (null != $isSingleton) {
+            $this->services[$id]->isSingleton($isSingleton);
+        }
 
         return $this;
     }
 
     /**
-     * @param string $serviceId
-     *
+     * @param string $id
+     * @return array|mixed|object
+     * @throws Exceptions\ServiceException
      * @throws ServiceNotDefinedException
-     *
-     * @return object
      */
-    public function getService(string $serviceId)
+    public function getService(string $id)
     {
-        if (!isset($this->services[$serviceId])) {
-            throw new ServiceNotDefinedException($serviceId);
+        if (!isset($this->services[$id])) {
+            throw new ServiceNotDefinedException($id);
         }
 
-        return $this->services[$serviceId]->getService();
+        return $this->services[$id]->getService();
     }
 }
