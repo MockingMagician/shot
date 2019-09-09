@@ -30,6 +30,9 @@ class TestClosureInstance extends TestCase
         foreach ($rf->getParameters() as $parameter) {
             echo $parameter->getName()."\n";
         }
-        echo ($rf->getClosure())('azerty', 0, 2);
+        echo ($rf->getClosure())('azerty', 0, 2)."\n";
+        echo \Reflection::export($rm);
+        echo \Reflection::export($rf);
+
     }
 }

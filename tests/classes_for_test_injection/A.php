@@ -27,4 +27,9 @@ class A
     {
         return $this->string;
     }
+
+    public function getInteger(): int
+    {
+        return $this->integer;
+    }
 }

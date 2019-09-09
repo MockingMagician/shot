@@ -16,7 +16,7 @@ class Service implements ServiceInterface
     /** @var mixed */
     private $defined = null;
     /** @var bool */
-    private $isClosure = true;
+    private $isClosure = false;
 
     public function __construct(
         ServiceRegisterInterface $register,
@@ -185,12 +185,22 @@ class Service implements ServiceInterface
         foreach ($reflectionParameters as $parameter) {
             if (isset($inputArgs[$parameter->getName()])) {
                 $args[$parameter->getPosition()] = $this->resolveInputArg($inputArgs[$parameter->getName()]);
+                continue;
             }
             if (isset($inputArgs[$parameter->getPosition()])) {
                 $args[$parameter->getPosition()] = $this->resolveInputArg($inputArgs[$parameter->getPosition()]);
+                continue;
             }
-            if ($parameter->isDefaultValueAvailable()) {
-                $args[$parameter->getPosition()] = $parameter->getDefaultValue();
+            if (!$parameter->isOptional()) {
+                if ($parameter->isDefaultValueAvailable()) {
+                    $args[$parameter->getPosition()] = $parameter->getDefaultValue();
+                    continue;
+                }
+                if ($parameter->allowsNull()) {
+                    $args[$parameter->getPosition()] = null;
+                    continue;
+                }
+                continue;
             }
 
             throw new ServiceException(sprintf('Can not resolve argument %s', $parameter->getName()));
