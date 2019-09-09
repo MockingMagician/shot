@@ -18,8 +18,12 @@ class Service implements ServiceInterface
     /** @var bool */
     private $isClosure = true;
 
-    public function __construct(ServiceRegisterInterface $register, string $id, $classOrStaticClassMethodOrCallable, array $args = [])
-    {
+    public function __construct(
+        ServiceRegisterInterface $register,
+        string $id,
+        $classOrStaticClassMethodOrCallable,
+        array $args = []
+    ) {
         $this->id = $id;
         $this->classOrStaticClassMethodOrCallable = $classOrStaticClassMethodOrCallable;
         $this->args = $args;
