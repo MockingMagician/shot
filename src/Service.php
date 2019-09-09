@@ -9,7 +9,7 @@ class Service implements ServiceInterface
 {
     private $register;
     private $id;
-    private $classOrStaticClassMethodOrCallable;
+    private $classOrStaticClassMethodOrFunction;
     private $args;
     /** @var bool */
     private $isSingleton = true;
@@ -21,11 +21,11 @@ class Service implements ServiceInterface
     public function __construct(
         ServiceRegisterInterface $register,
         string $id,
-        $classOrStaticClassMethodOrCallable,
+        string $classOrStaticClassMethodOrFunction,
         array $args = []
     ) {
         $this->id = $id;
-        $this->classOrStaticClassMethodOrCallable = $classOrStaticClassMethodOrCallable;
+        $this->classOrStaticClassMethodOrFunction = $classOrStaticClassMethodOrFunction;
         $this->args = $args;
         $this->register = $register;
     }
@@ -84,18 +84,18 @@ class Service implements ServiceInterface
     {
         if (preg_match(
             '#^([a-z][a-z0-9]*)::([a-z][a-z0-9]*)$#i',
-            $this->classOrStaticClassMethodOrCallable,
+            $this->classOrStaticClassMethodOrFunction,
             $matches
         )) {
             return $this->resolveStaticMethod($matches[1], $matches[2]);
         }
 
-        if (function_exists($this->classOrStaticClassMethodOrCallable)) {
-            return $this->resolveCallable($this->classOrStaticClassMethodOrCallable);
+        if (function_exists($this->classOrStaticClassMethodOrFunction)) {
+            return $this->resolveCallable($this->classOrStaticClassMethodOrFunction);
         }
 
-        if (class_exists($this->classOrStaticClassMethodOrCallable)) {
-            return $this->resolveClass($this->classOrStaticClassMethodOrCallable);
+        if (class_exists($this->classOrStaticClassMethodOrFunction)) {
+            return $this->resolveClass($this->classOrStaticClassMethodOrFunction);
         }
     }
 

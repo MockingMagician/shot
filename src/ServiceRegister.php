@@ -19,23 +19,23 @@ class ServiceRegister implements ServiceRegisterInterface
     private $services;
 
     /**
-     * @param $classOrStaticClassMethodOrCallable
+     * @param $classOrStaticClassMethodOrFunction
      * @param array $args
      * @param string|null $id
      * @return ServiceRegister
      * @throws ServiceIdDuplicateException
      */
-    public function createService($classOrStaticClassMethodOrCallable, array $args = [], string $id = null, ?bool $isSingleton = null): self
+    public function createService($classOrStaticClassMethodOrFunction, array $args = [], string $id = null, ?bool $isSingleton = null): self
     {
         if (null === $id) {
-            $id = $classOrStaticClassMethodOrCallable;
+            $id = $classOrStaticClassMethodOrFunction;
         }
 
         if (isset($this->services[$id])) {
             throw new ServiceIdDuplicateException($id);
         }
 
-        $this->services[$id] = new Service($this, $id, $classOrStaticClassMethodOrCallable, $args);
+        $this->services[$id] = new Service($this, $id, $classOrStaticClassMethodOrFunction, $args);
         if (null != $isSingleton) {
             $this->services[$id]->isSingleton($isSingleton);
         }
