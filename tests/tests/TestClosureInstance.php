@@ -24,5 +24,12 @@ class TestClosureInstance extends TestCase
         } catch (\Throwable $e) {
             echo $e->getMessage();
         }
+        $rf = new \ReflectionFunction('mb_substr');
+        echo "\n";
+        echo $rf->getName()."\n";
+        foreach ($rf->getParameters() as $parameter) {
+            echo $parameter->getName()."\n";
+        }
+        echo ($rf->getClosure())('azerty', 0, 2);
     }
 }

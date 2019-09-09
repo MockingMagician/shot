@@ -39,7 +39,7 @@ class Service implements ServiceInterface
         $defined = $this->define();
 
         if ($this->isClosure) {
-            return ($this->defined[0])($this->defined[1]);
+            return ($this->defined[0])(...$this->defined[1]);
         }
 
         return $defined;
@@ -85,12 +85,20 @@ class Service implements ServiceInterface
         )) {
             return $this->resolveStaticMethod($matches[1], $matches[2]);
         }
+
+        if (function_exists($this->classOrStaticClassMethodOrCallable)) {
+            return $this->resolveCallable($this->classOrStaticClassMethodOrCallable);
+        }
+
+        if (class_exists($this->classOrStaticClassMethodOrCallable)) {
+            return $this->resolveClass($this->classOrStaticClassMethodOrCallable);
+        }
     }
 
     /**
      * @param string $class
      * @param string $method
-     * @return mixed
+     * @return array
      * @throws ServiceException
      */
     private function resolveStaticMethod(string $class, string $method)
@@ -112,6 +120,53 @@ class Service implements ServiceInterface
         }
 
         return [$rm->getClosure(), $this->resoleArguments($rm->getParameters(), $this->args)];
+    }
+
+    /**
+     * @param string $function
+     * @return array
+     * @throws ServiceException
+     */
+    private function resolveCallable(string $function)
+    {
+        $this->isClosure = true;
+        $this->isSingleton(true);
+        try {
+            $rf = new \ReflectionFunction($function);
+        } catch (\Throwable $e) {
+            $exception = new ServiceException($e->getMessage(), $e->getCode(), $e);
+
+            throw $exception;
+        }
+
+        return [$rf->getClosure(), $this->resoleArguments($rf->getParameters(), $this->args)];
+    }
+
+    /**
+     * @param string $class
+     * @return object
+     * @throws ServiceException
+     */
+    private function resolveClass(string $class)
+    {
+        try {
+            $rc = new \ReflectionClass($class);
+        } catch (\Throwable $e) {
+            $exception = new ServiceException($e->getMessage(), $e->getCode(), $e);
+
+            throw $exception;
+        }
+
+        if (!$rc->isInstantiable()) {
+            throw new ServiceException(sprintf('Class %s is not instantiable', $class));
+        }
+
+        $constructor = $rc->getConstructor();
+        if (null === $constructor) {
+            return $rc->newInstance();
+        }
+
+        return $rc->newInstanceArgs($this->resoleArguments($constructor->getParameters(), $this->args));
     }
 
     /**
