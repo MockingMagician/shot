@@ -29,7 +29,7 @@ class ServiceRegister implements ServiceRegisterInterface
     public function createService(
         $classOrStaticClassMethodOrFunction,
         array $args = [],
-        string $id = null,
+        ?string $id = null,
         ?bool $isSingleton = null
     ): self {
         if (null === $id) {

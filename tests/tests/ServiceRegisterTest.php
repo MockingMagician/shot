@@ -1,0 +1,35 @@
+<?php
+
+namespace MockingMagician\Shot\Tests;
+
+use MockingMagician\Shot\Exceptions\ServiceException;
+use MockingMagician\Shot\Exceptions\ServiceIdDuplicateException;
+use MockingMagician\Shot\Exceptions\ServiceNotDefinedException;
+use MockingMagician\Shot\TestClasses\A;
+use MockingMagician\Shot\ServiceRegister;
+use MockingMagician\Shot\TestClasses\E;
+use PHPUnit\Framework\TestCase;
+
+class ServiceRegisterTest extends TestCase
+{
+
+    /**
+     * @throws ServiceIdDuplicateException
+     * @throws ServiceException
+     * @throws ServiceNotDefinedException
+     */
+    public function testCreateService()
+    {
+        $serviceRegister = new ServiceRegister();
+        $string = 'string';
+        $integer = random_int(0, 1000);
+        $string2 = 'string2';
+        $integer2 = random_int(0, 1000);
+        $serviceRegister->createService(E::class, [$string, $integer, '@service_class_a']);
+        $serviceRegister->createService(A::class, [$string2, $integer2], 'service_class_a');
+        $s = $serviceRegister->getService(E::class);
+        self::assertInstanceOf(E::class, $s);
+        self::assertEquals($string.$string2, $s->getString());
+        self::assertEquals($integer + $integer2, $s->getInteger());
+    }
+}

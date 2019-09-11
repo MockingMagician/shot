@@ -13,9 +13,9 @@ namespace MockingMagician\Shot\TestClasses;
 class A
 {
     /** @var string */
-    private $string;
+    protected $string;
     /** @var int */
-    private $integer;
+    protected $integer;
 
     public function __construct(string $string, int $integer)
     {
@@ -31,5 +31,15 @@ class A
     public function getInteger(): int
     {
         return $this->integer;
+    }
+
+    public function appendToString(string $string)
+    {
+        $this->string .= $string;
+    }
+
+    public function addToInteger(int $integer)
+    {
+        $this->integer += $integer;
     }
 }

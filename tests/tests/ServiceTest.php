@@ -30,7 +30,12 @@ class ServiceTest extends TestCase
     {
         $string = 'this is my string';
         $integer = random_int(0, 5000);
-        $service = new Service($this->serviceRegister, A::class, A::class, [$string, $integer]);
+        $service = new Service(
+            $this->serviceRegister,
+            A::class,
+            A::class,
+            [$string, $integer]
+        );
         /** @var A $s */
         $s = $service->getService();
         self::assertInstanceOf(A::class, $s);
@@ -41,5 +46,22 @@ class ServiceTest extends TestCase
         $service->isSingleton(false);
         $s3 = $service->getService();
         self::assertNotSame($s, $s3);
+        $toAppend = ' with a little bit more';
+        $toAdd = random_int(0, 5000);
+        $service = new Service(
+            $this->serviceRegister,
+            A::class,
+            A::class,
+            [$string, $integer],
+            [
+                ['appendToString', [$toAppend]],
+                ['addToInteger', [$toAdd]],
+            ]
+        );
+        /** @var A $s */
+        $s = $service->getService();
+        self::assertInstanceOf(A::class, $s);
+        self::assertEquals($string.$toAppend, $s->getString());
+        self::assertEquals($integer + $toAdd, $s->getInteger());
     }
 }

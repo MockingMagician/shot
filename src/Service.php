@@ -110,7 +110,10 @@ class Service implements ServiceInterface
             return $this->resolveClass($this->classOrStaticClassMethodOrFunction);
         }
 
-        throw new ServiceException(sprintf('%s Class or Static method or function not exist', $this->classOrStaticClassMethodOrFunction));
+        throw new ServiceException(sprintf(
+            '%s Class or static method or function not exist',
+            $this->classOrStaticClassMethodOrFunction
+        ));
     }
 
     /**
@@ -185,16 +188,17 @@ class Service implements ServiceInterface
         }
 
         $object = $rc->newInstanceArgs($this->resoleArguments($constructor->getParameters(), $this->args));
+
         foreach ($this->factory as list($method, $args)) {
             try {
-                $rm = new \ReflectionMethod(get_class($object), $method);
+                $rm = new \ReflectionMethod($class, $method);
             } catch (\Throwable $e) {
                 $exception = new ServiceException($e->getMessage(), $e->getCode(), $e);
 
                 throw $exception;
             }
             $args = $this->resoleArguments($rm->getParameters(), $args);
-            $object = $object->$method(...$args);
+            $object->$method(...$args);
         }
 
         return $object;
