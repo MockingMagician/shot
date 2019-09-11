@@ -22,11 +22,16 @@ class ServiceRegister implements ServiceRegisterInterface
      * @param $classOrStaticClassMethodOrFunction
      * @param array $args
      * @param string|null $id
+     * @param bool|null $isSingleton
      * @return ServiceRegister
      * @throws ServiceIdDuplicateException
      */
-    public function createService($classOrStaticClassMethodOrFunction, array $args = [], string $id = null, ?bool $isSingleton = null): self
-    {
+    public function createService(
+        $classOrStaticClassMethodOrFunction,
+        array $args = [],
+        string $id = null,
+        ?bool $isSingleton = null
+    ): self {
         if (null === $id) {
             $id = $classOrStaticClassMethodOrFunction;
         }
