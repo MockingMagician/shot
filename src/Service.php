@@ -237,6 +237,8 @@ class Service implements ServiceInterface
             throw new ServiceException(sprintf('Can not resolve argument %s', $parameter->getName()));
         }
 
+        \ksort($args);
+
         return $args;
     }
 
@@ -245,7 +247,7 @@ class Service implements ServiceInterface
         if (is_string($argument) && preg_match('#^@(.+)$#', $argument, $matches)) {
             return $this->register->getService($matches[1]);
         }
-        if (is_string($argument) && preg_match('#^(\@)(.+)$#', $argument, $matches)) {
+        if (is_string($argument) && preg_match('#^(\\\\@)(.+)$#', $argument, $matches)) {
             return '@'.$matches[2];
         }
 

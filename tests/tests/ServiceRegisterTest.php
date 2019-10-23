@@ -21,15 +21,23 @@ class ServiceRegisterTest extends TestCase
     public function testCreateService()
     {
         $serviceRegister = new ServiceRegister();
-        $string = 'string';
+        $string = '\@string';
         $integer = random_int(0, 1000);
         $string2 = 'string2';
         $integer2 = random_int(0, 1000);
-        $serviceRegister->createService(E::class, [$string, $integer, '@service_class_a']);
+        $serviceRegister->createService(
+            E::class,
+            [
+                'a' => '@service_class_a',
+                'integer' => $integer,
+                'string' => $string,
+            ]
+        );
         $serviceRegister->createService(A::class, [$string2, $integer2], 'service_class_a');
+        /** @var E $s */
         $s = $serviceRegister->getService(E::class);
         self::assertInstanceOf(E::class, $s);
-        self::assertEquals($string.$string2, $s->getString());
+        self::assertEquals(substr($string, 1).$string2, $s->getString());
         self::assertEquals($integer + $integer2, $s->getInteger());
     }
 }
