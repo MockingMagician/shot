@@ -13,7 +13,7 @@ use MockingMagician\Shot\Call;
 use MockingMagician\Shot\CallIterator;
 use MockingMagician\Shot\ServiceCompiler;
 use MockingMagician\Shot\ServiceDefinition;
-use MockingMagician\Shot\ServiceRegister;
+use MockingMagician\Shot\_ServiceRegister;
 use MockingMagician\Shot\TestClasses\B;
 use PHPUnit\Framework\TestCase;
 
@@ -22,7 +22,7 @@ class ServiceCompilerTest extends TestCase
 
     public function testCompile()
     {
-        $serviceRegister = new ServiceRegister();
+        $serviceRegister = new _ServiceRegister();
         $bindIterator = new BindIterator();
         $callIterator = new CallIterator(...[
             new Call('__construct', 5),

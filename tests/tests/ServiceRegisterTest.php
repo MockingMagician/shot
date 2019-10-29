@@ -6,7 +6,7 @@ use MockingMagician\Shot\Exceptions\ServiceException;
 use MockingMagician\Shot\Exceptions\ServiceIdDuplicateException;
 use MockingMagician\Shot\Exceptions\ServiceNotDefinedException;
 use MockingMagician\Shot\TestClasses\A;
-use MockingMagician\Shot\ServiceRegister;
+use MockingMagician\Shot\_ServiceRegister;
 use MockingMagician\Shot\TestClasses\E;
 use PHPUnit\Framework\TestCase;
 
@@ -20,7 +20,7 @@ class ServiceRegisterTest extends TestCase
      */
     public function testCreateService()
     {
-        $serviceRegister = new ServiceRegister();
+        $serviceRegister = new _ServiceRegister();
         $string = '\@string';
         $integer = random_int(0, 1000);
         $string2 = 'string2';
